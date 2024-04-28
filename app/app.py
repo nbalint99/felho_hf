@@ -8,7 +8,7 @@ def health():
 
 @app.route("/")
 def hello_world():
-    return "Can you see this text? I hope so!"
+    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
    app.run(host="0.0.0.0", port=5000)
