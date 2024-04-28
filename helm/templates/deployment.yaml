@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: felhohf
+  name: felhohf-app1
 spec:
   selector:
     matchLabels:
-      app: felhohf
+      app: felhohf-app1
   template:
     metadata:
       labels:
-        app: felhohf
+        app: felhohf-app1
     spec:
       containers:
-        - name: felhohf
+        - name: felhohf-app1
           image: nbalint99/felhohf:{{ .Values.env.APP_VERSION }}
           ports:
             - name: http

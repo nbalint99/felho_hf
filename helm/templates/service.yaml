@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: felhohf
+  name: felhohf-app1
 spec:
   type: LoadBalancer
   ports:
@@ -10,5 +10,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: felhohf
+    app: felhohf-app1
 

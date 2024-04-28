@@ -1,5 +1,5 @@
 apiVersion: v2
-name: felhohf
+name: felhohf-app
 description: A Helm chart for Kubernetes
 
 type: application
