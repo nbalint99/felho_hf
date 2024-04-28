@@ -3,5 +3,5 @@ RUN pip3 install flask requests
 RUN useradd pythonuser -ms /bin/bash
 WORKDIR /home/pythonuser/web
 USER pythonuser
-COPY web.py web.py
-CMD python -u web.py
+COPY app.py app.py
+CMD python -u app.py
