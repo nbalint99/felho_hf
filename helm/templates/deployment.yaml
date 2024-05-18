@@ -20,7 +20,7 @@ spec:
               protocol: TCP
           env:
           - name: MONGO_URI
-            value: 'mongodb://mongo:27017/carspics
+            value: "mongodb://mongo:27017/carspics"
           readinessProbe:
             httpGet:
                 path: /health
