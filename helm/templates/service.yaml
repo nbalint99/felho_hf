@@ -6,7 +6,7 @@ spec:
   type: LoadBalancer
   ports:
     - port: 5000
-      targetPort: http
+      targetPort: 5000
       protocol: TCP
       name: http
   selector:
