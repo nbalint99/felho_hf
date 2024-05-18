@@ -4,4 +4,5 @@ RUN useradd pythonuser -ms /bin/bash
 WORKDIR /home/pythonuser/app
 USER pythonuser
 COPY app.py app.py
+CMD exec /bin/bash -c "trap : TERM INT; sleep infinity & wait"
 CMD python -u app.py
