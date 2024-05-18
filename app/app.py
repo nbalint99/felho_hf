@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, uré_for, render_template, send_form_directory
+from flask import Flask, request, redirect, url_for, render_template, send_from_directory
 import os
 
 app = Flask(__name__)
