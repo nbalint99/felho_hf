@@ -3,6 +3,6 @@ RUN pip3 install flask requests
 RUN pip3 install flask_pymongo requests
 RUN useradd pythonuser -ms /bin/bash
 USER pythonuser
-COPY app.py app.py
 WORKDIR /app
+COPY app.py app.py
 CMD python -u app.py
