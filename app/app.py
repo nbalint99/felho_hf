@@ -6,10 +6,6 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
 mongo = PyMongo(app)
 
-@app.route("/health")
-def health():
-    return "OK"
-
 @app.route("/")
 def index():
     return render_template("index.html")
