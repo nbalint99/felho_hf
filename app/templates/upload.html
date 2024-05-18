@@ -2,12 +2,9 @@
 <html lang="hu">
 <body>
 
-{% if uploaded_photo %}
-   <img src="{{ url_for('static', filename=image_file.filename) }}">
+<h1>Uploaded photo</h1>
+   <img src="{{ url_for('uploaded_photo', filename=image_file.filename) }}">
    <p> {{ description }}</p>
-{% else %}
-   <p>No picture</p>
-{% endif %}
 </body>
 </html>
 
