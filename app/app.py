@@ -10,6 +10,10 @@ mongo = PyMongo(app)
 def index():
     return render_template("index.html")
 
+@app.route('/health')
+def health():
+    return jsonify(status="ok")
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
@@ -33,4 +37,4 @@ def file(filename):
     return mongo.send_file(filename)
 
 if __name__ == "__main__":
-   app.run(debug=True)
+   app.run(host="0.0.0.0", debug=True)
