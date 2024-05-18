@@ -6,23 +6,26 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'upload'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+@app.route("/health")
+def health():
+    return "OK"
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
+@app.route('/', methods=['GET', 'POST'])
+def hello_world():
+    uploaded_image = None
+    description = None
     if request.method == 'POST':
-        if 'image' not in request.files:
-            return redirect(request.url)
-        file = request.files['image']
-        if file.filename == '':
-            return redirect(request.url)
-        if file:
-            description = request.form['description']
-            return render_template('upload.html', image_file=file, description=description)
-
-    return render_template('upload.html')
+       image = request.files["image"]
+       description = request.form["description"]
+       if image.filename == '':
+          imsge_place = "./upload/image.png"
+          image.save(image_place)
+          upload_image = image_place
+    return render_template('index.html', uploaded_image=uploaded_image, description=description)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
