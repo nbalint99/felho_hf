@@ -5,9 +5,6 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
 @app.route("/health")
 def health():
     return "OK"

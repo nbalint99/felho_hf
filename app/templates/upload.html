@@ -3,7 +3,7 @@
 <body>
 
 <h1>Uploaded photo</h1>
-   <img src="{{ url_for('uploaded_photo', filename=image_file.filename) }}">
+   <img src="{{ url_for("file", filename=filename) }}">
    <p> {{ description }}</p>
 </body>
 </html>
