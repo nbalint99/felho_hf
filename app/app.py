@@ -12,7 +12,7 @@ def index():
 
 @app.route('/health')
 def health():
-    return jsonify(status="ok")
+    return "OK"
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
