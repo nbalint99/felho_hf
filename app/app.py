@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template
+from flask import Flask, request, redirect, url_for, render_template, jsonify
 from flask_pymongo import PyMongo
 import os
 
@@ -12,7 +12,7 @@ def index():
 
 @app.route('/health')
 def health():
-    return "OK"
+    return jsonify(status="ok")
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
