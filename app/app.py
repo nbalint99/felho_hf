@@ -137,7 +137,7 @@ def uploads(file_id):
 
 @app.route("/admin")
 def admin():
-    return render_template("admin.html)
+    return render_template("admin.html")
 
 @app.route("/subscribe", methods=["POST"])
 def subscribe():
