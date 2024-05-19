@@ -19,8 +19,7 @@ config_file = "config/yolov3.cfg"
 weights_file = "config/yolov3.weights"
 class_names_file = "config/coco.names"
 
-net = Darknet(config_file)
-net.load_weights(weights_file)
+net = cv2.dnn.readNet(weights_file, config_file)
 with open(class_names_file, "r") as f:
     class_names = f.read().strip().split("\n")
 
