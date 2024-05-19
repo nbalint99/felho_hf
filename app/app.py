@@ -37,7 +37,7 @@ def file(file_id):
     except Exception as exc:
         return str(exc)
 
-@app.route("/upload/<filename>")
+@app.route("/upload/<file_id>")
 def upload(file_id):
     try:
         file = fs.get(ObjectId(file_id))
