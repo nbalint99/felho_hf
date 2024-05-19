@@ -1,4 +1,4 @@
-FROM python:3.6.15-slim-buster
+FROM python:3.8-slim
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libgtk2.0-dev \
