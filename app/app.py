@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, url_for, render_template, jsonify, send_file
 from flask_pymongo import PyMongo, ObjectId
+from werkzeug.utils import secure_filename
 from gridfs import GridFS
 from bson import ObjectId
 import os
@@ -8,6 +9,8 @@ import numpy as np
 
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
+app.config["UPLOAD_FOLDER"] = "uploads"
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 mongo = PyMongo(app)
 fs = GridFS(mongo.db)
 
@@ -37,7 +40,8 @@ def upload_file():
     if file:
         description = request.form["description"]
 
-        file_path = os.path.join("uploads", file.filename)
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
         file.save(file_path)
         image = cv2.imread(file_path)
         blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
@@ -74,11 +78,13 @@ def upload_file():
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
             printout += 1
 
-        detect_file_path = os.path.join('uploads', 'detected_' + file.filename)
+        detect_file_path = os.path.join(app.config["UPLOAD_FOLDER"], 'detected_' + filename)
         cv2.imwrite(detect_file_path, image)
 
-        file_id = fs.put(detect_file_path, filename='detected_' + file.filename, content_type=file.content_type, description = description)
-        return redirect(url_for('uploads', file_id=file_id))
+        with open(detect_file_path, "rb") as f:
+            fs.put(f, filename="detected_" + filename, description=description)
+
+        return redirect(url_for('uploads', file_id="detected_" + filename))
 
 @app.route("/file/<file_id>")
 def file(file_id):
