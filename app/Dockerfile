@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y \
     libgtk2.0-dev \
     build-essential \
     cmake \
+    wget \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 RUN pip3 install --upgrade pip
