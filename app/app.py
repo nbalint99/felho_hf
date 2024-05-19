@@ -53,6 +53,7 @@ def upload_file():
         outs = net.forward(output_layers)
 
         objects = []
+        confidences = []
         for out in outs:
             for detection in out:
                 scores = detection[5:]
@@ -67,16 +68,17 @@ def upload_file():
                     x = int(center_x - w / 2)
                     y = int(center_y - h / 2)
 
-                    objects.append([x, y, w, h, confidence])
+                    objects.append([x, y, w, h])
+                    confidences.append(float(confidence))
 
-        nms = cv2.dnn.NMSBoxes(np.array(objects)[:, :4], np.array(objects)[:, 4], score_threshold=0.5, nms_threshold=0.4)
+        nms = cv2.dnn.NMSBoxes(objects, confidences, score_threshold=0.5, nms_threshold=0.4)
 
         printout = 0
-        for i in nms:
-            index = i[0] if isinstance(i, tuple) else i
-            x, y, w, h = objects[index[:4]
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            printout += 1
+        for i in range(len(boxes)):
+            for i in nms:
+                x, y, w, h = objects[i]
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                printout += 1
 
         detect_file_path = os.path.join(app.config["UPLOAD_FOLDER"], 'detected_' + filename)
         cv2.imwrite(detect_file_path, image)
