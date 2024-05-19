@@ -11,6 +11,7 @@ RUN pip3 install flask requests
 RUN pip3 install flask_pymongo requests
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install opencv-python-headless
+RUN pip install darknet
 RUN useradd pythonuser -ms /bin/bash
 USER pythonuser
 WORKDIR /app

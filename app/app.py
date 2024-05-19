@@ -3,6 +3,7 @@ from flask_pymongo import PyMongo, ObjectId
 from werkzeug.utils import secure_filename
 from gridfs import GridFS
 from bson import ObjectId
+from darknet import Darknet
 import os
 import cv2
 import numpy as np
@@ -18,7 +19,8 @@ config_file = "config/yolov3.cfg"
 weights_file = "config/yolov3.weights"
 class_names_file = "config/coco.names"
 
-net = cv2.dnn.readNet(config_file, weights_file)
+net = Darknet(config_file)
+net.load_weights(weights_file)
 with open(class_names_file, "r") as f:
     class_names = f.read().strip().split("\n")
 
