@@ -73,12 +73,9 @@ def upload_file():
 
         nms = cv2.dnn.NMSBoxes(objects, confidences, score_threshold=0.5, nms_threshold=0.4)
 
-        printout = 0
-        for i in range(len(boxes)):
-            for i in nms:
-                x, y, w, h = objects[i]
-                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                printout += 1
+        for i in nms:
+            x, y, w, h = objects[i]
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         detect_file_path = os.path.join(app.config["UPLOAD_FOLDER"], 'detected_' + filename)
         cv2.imwrite(detect_file_path, image)
