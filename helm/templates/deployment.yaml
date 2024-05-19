@@ -21,6 +21,9 @@ spec:
           env:
           - name: MONGO_URI
             value: "mongodb://mongo:27017/carspics"
+          env:
+          - name: OTHER_MONGO_URI
+            value: "mongodb://mongo:27017/email"
           readinessProbe:
             httpGet:
                 path: /health

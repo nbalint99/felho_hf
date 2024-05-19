@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, url_for, render_template, jsonify, send_file
 from flask_pymongo import PyMongo, ObjectId
+from flask_mail import Mail, Message
 from werkzeug.utils import secure_filename
 from gridfs import GridFS
 from bson import ObjectId
@@ -9,9 +10,13 @@ import numpy as np
 
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
+app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
 mongo = PyMongo(app)
+mail = Mail(app)
+other_mongo = PyMongo(app, config_prefix='OTHER')
 fs = GridFS(mongo.db)
 
 config_file = "config/yolov3.cfg"
@@ -29,6 +34,31 @@ def index():
 @app.route('/health')
 def health():
     return jsonify(status="ok")
+
+def send_email(recipient, subject, body):
+    msg = MIMEMultipart()
+    msg["From"] = "nbhofficial.drive@gmail.com"
+    msg["To"] = recipient
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+       server = smtplib.SMTP("smtp.gmail.com", 587)
+       server.starttls()
+       server.login("nbhofficial.drive@gmail.com", "xajge6-naSbib-taffuj")
+       text = msg.as_string()
+       server.sendmail("nbhofficial.drive@gmail.com", recipient, text)
+       server.quit()
+    except Exception as e:
+       print("Failed {e}")
+
+def send_emails(file_url):
+    emails_collection = other_mongo.db.emails.find({})
+    for email_doc in emails_collection:
+        recipient_email = email_doc["email"]
+        subject = "New image - auto detection"
+        body = "A new image has been uploaded, you can check it here: {file_url}"
+        send_email(email, subject, body)
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
@@ -83,6 +113,9 @@ def upload_file():
         with open(detect_file_path, "rb") as f:
             fs.put(f, filename="detected_" + filename, description=description)
 
+        file_url = url_for("uploads", file_id="detected_" + filename, _external=True)
+        send_emails(file_url)
+
         return redirect(url_for('uploads', file_id="detected_" + filename))
 
 @app.route("/file/<file_id>")
@@ -101,6 +134,23 @@ def uploads(file_id):
         return render_template("upload.html", filename=file.filename, description=description, file_id=file_id)
     except Exception as exc:
         return str(exc)
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html)
+
+@app.route("/subscribe", methods=["POST"])
+def subscribe():
+    email = request.form["email"]
+
+    db = other_mongo.db.emails
+    if db.find.one({"email": email}):
+       return "Already subscribed", 400
+
+    db.insert_one({"email": email})
+    return "Successful"
+
+
 
 if __name__ == "__main__":
    app.run(host="0.0.0.0", debug=True)
