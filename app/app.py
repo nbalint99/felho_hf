@@ -10,13 +10,16 @@ import numpy as np
 
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
-app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
+#app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
+other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email"))
+other_mongo_db = other_mongo_client.db
+
 mongo = PyMongo(app)
 mail = Mail(app)
-other_mongo = PyMongo(app, config_prefix='OTHER')
+#other_mongo = PyMongo(app, config_prefix='OTHER')
 fs = GridFS(mongo.db)
 
 config_file = "config/yolov3.cfg"
@@ -53,7 +56,7 @@ def send_email(recipient, subject, body):
        print("Failed {e}")
 
 def send_emails(file_url):
-    emails_collection = other_mongo.db.emails.find({})
+    emails_collection = other_mongo_db.emails.find({})
     for email_doc in emails_collection:
         recipient_email = email_doc["email"]
         subject = "New image - auto detection"
