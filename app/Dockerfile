@@ -16,4 +16,5 @@ USER pythonuser
 WORKDIR /app
 COPY templates /app/templates
 COPY app.py /app
+COPY config /app/config
 CMD python -u app.py
