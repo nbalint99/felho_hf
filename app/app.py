@@ -11,6 +11,14 @@ app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/car
 mongo = PyMongo(app)
 fs = GridFS(mongo.db)
 
+config_file = "config/yolov3.cfg"
+weights_file = "config/yolov3.weights"
+class_names_file = "config/coco.names"
+
+net = cv2.dnn.readNet(config_file, weights_file)
+with open(class_names_file, "r") as f:
+    class_names = f.read().strip().split("\n")
+
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -29,15 +37,9 @@ def upload_file():
     if file:
         description = request.form["description"]
 
-        config_file = "config/yolov3.cfg"
-        weights_file = "config/yolov3.weights"
-        class_names_file = "config/coco.names"
-
-        with open(class_names_file, "r") as f:
-            class_names = f.read().strip().split("\n")
-
-        net = cv2.dnn.readNet(config_file, weights_file)
-        image = file
+        file_path = os.path.join("uploads", file.filename)
+        file.save(file_path)
+        image = cv2.imread(file_path)
         blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (416, 416), swapRB=True, crop=False)
 
         net.setInput(blob)
@@ -72,9 +74,10 @@ def upload_file():
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
             printout += 1
 
-        cv2.imwrite(cv2out, image)
+        detect_file_path = os.path.join('uploads', 'detected_' + file.filename)
+        cv2.imwrite(detect_file_path, image)
 
-        file_id = fs.put(cv2out, filename=file.filename, content_type=file.content_type, description = description)
+        file_id = fs.put(detect_file_path, filename='detected_' + file.filename, content_type=file.content_type, description = description)
         return redirect(url_for('uploads', file_id=file_id))
 
 @app.route("/file/<file_id>")
