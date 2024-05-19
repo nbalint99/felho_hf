@@ -18,4 +18,5 @@ WORKDIR /app
 COPY templates /app/templates
 COPY app.py /app
 COPY config /app/config
+RUN wget -O /app/config/yolov3.weights "https://pjreddie.com/media/files/yolov3.weights"
 CMD python -u app.py
