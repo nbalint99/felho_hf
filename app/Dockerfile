@@ -14,6 +14,8 @@ RUN pip install --upgrade pip setuptools wheel
 RUN pip install opencv-python-headless
 RUN pip install darknet
 RUN mkdir -p /app/other_config
+RUN mkdir -p /app/uploads
+RUN chmod 755 /app/uploads
 RUN wget -O /app/other_config/yolov3.weights "https://pjreddie.com/media/files/yolov3.weights"
 RUN useradd pythonuser -ms /bin/bash
 USER pythonuser

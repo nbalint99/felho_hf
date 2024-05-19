@@ -10,7 +10,6 @@ import numpy as np
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
 app.config["UPLOAD_FOLDER"] = "uploads"
-os.chmod(app.config["UPLOAD_FOLDER"], 0o755)
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 mongo = PyMongo(app)
 fs = GridFS(mongo.db)
