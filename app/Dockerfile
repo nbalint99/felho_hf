@@ -13,11 +13,12 @@ RUN pip3 install flask_pymongo requests
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install opencv-python-headless
 RUN pip install darknet
+RUN mkdir -p /app/other_config
+RUN wget -O /app/other_config/yolov3.weights "https://pjreddie.com/media/files/yolov3.weights"
 RUN useradd pythonuser -ms /bin/bash
 USER pythonuser
 WORKDIR /app
 COPY templates /app/templates
 COPY app.py /app
 COPY config /app/config
-RUN wget -O /app/config/yolov3.weights "https://pjreddie.com/media/files/yolov3.weights"
 CMD python -u app.py

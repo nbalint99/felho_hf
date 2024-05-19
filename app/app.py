@@ -15,7 +15,7 @@ mongo = PyMongo(app)
 fs = GridFS(mongo.db)
 
 config_file = "config/yolov3.cfg"
-weights_file = "config/yolov3.weights"
+weights_file = "other_config/yolov3.weights"
 class_names_file = "config/coco.names"
 
 net = cv2.dnn.readNetFromDarknet(config_file, weights_file)
