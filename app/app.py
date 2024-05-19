@@ -61,7 +61,7 @@ def upload_file():
                     x = int(center_x - w / 2)
                     y = int(center_y - h / 2)
 
-                    obejcts.append([x, y, w, h, confidence])
+                    objects.append([x, y, w, h, confidence])
 
         nms = cv2.dnn.NMSBoxes(np.array(objects)[:, :4], np.array(objects)[:, 4], score_threshold=0.5, nms_threshold=0.4)
 
