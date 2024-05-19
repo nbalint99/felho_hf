@@ -27,7 +27,7 @@ def upload_file():
     if file:
         description = request.form["description"]
         file_id = fs.put(file, filename=file.filename, content_type=file.content_type, description = description)
-        return redirect(url_for('upload', file_id=file_id))
+        return redirect(url_for('uploads', file_id=file_id))
 
 @app.route("/file/<file_id>")
 def file(file_id):
@@ -37,8 +37,8 @@ def file(file_id):
     except Exception as exc:
         return str(exc)
 
-@app.route("/upload/<file_id>")
-def upload(file_id):
+@app.route("/uploads/<file_id>")
+def uploads(file_id):
     try:
         file = fs.get(ObjectId(file_id))
         description = file.description
