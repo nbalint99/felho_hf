@@ -3,7 +3,6 @@ from flask_pymongo import PyMongo, ObjectId
 from werkzeug.utils import secure_filename
 from gridfs import GridFS
 from bson import ObjectId
-from darknet import Darknet
 import os
 import cv2
 import numpy as np
