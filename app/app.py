@@ -7,7 +7,6 @@ from bson import ObjectId
 import os
 import cv2
 import numpy as np
-import logging
 
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
@@ -20,8 +19,6 @@ app.config["MAIL_USERNAME"] = "nbhofficial.drive@gmail.com"
 app.config["MAIL_PASSWORD"] = "xajge6-naSbib-taffuj"
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
-
-logging.basicConfig(level=logging.INFO)
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other-mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
@@ -52,11 +49,10 @@ def send_email(recipient, subject, body):
 
     try:
        mail.send(msg)
-       logging.info("Sikeres kuldes {recipient}")
-       return render_template("admin.html")
+       return render_template("index.html")
     except Exception as e:
-       logging.info("Failed {e}")
        print("Failed {e}")
+       return render_template("admin.html")
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
@@ -122,7 +118,7 @@ def upload_file():
         file_url = url_for("uploads", filename="detected_" + filename, _external=True)
         send_emails(file_url)
 
-        return redirect(url_for('uploads', filename="detected_" + filename))
+        #return redirect(url_for('uploads', filename="detected_" + filename))
 
 @app.route("/file/<filename>")
 def file(filename):
