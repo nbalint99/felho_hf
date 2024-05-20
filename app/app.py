@@ -49,7 +49,7 @@ def health():
 def send_email(recipient, subject_s, body):
     message = Mail(
         from_email='nbhofficial.drive@gmail.com',
-        to_emails='novak.balint.huba@gmail.com',
+        to_emails='xxx@xxx.com',
         subject = subject_s,
         html_content = body)
     try:
@@ -59,7 +59,7 @@ def send_email(recipient, subject_s, body):
     #print(response.body)
     #print(response.headers)
     except Exception as e:
-        print(e.message)
+        print(e)
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
