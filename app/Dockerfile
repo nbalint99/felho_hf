@@ -16,7 +16,7 @@ RUN pip install darknet
 RUN pip install Flask-Mail
 RUN mkdir -p /app/other_config
 RUN mkdir -p /app/uploads
-RUN chmod 755 /app/uploads
+RUN chmod -R 777 /app/uploads
 RUN wget -O /app/other_config/yolov3.weights "https://pjreddie.com/media/files/yolov3.weights"
 RUN useradd pythonuser -ms /bin/bash
 USER pythonuser
