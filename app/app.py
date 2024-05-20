@@ -147,11 +147,11 @@ def admin():
 def subscribe():
     email = request.form["email"]
 
-    if other_mongo_db.emails.find.one({"email": email}):
-       return "Already subscribed", 400
+    #if other_mongo_db.emails.find.one({"email": email}):
+    #   return "Already subscribed", 400
 
-    other_mongo_db.emails.insert_one({"email": email})
-    return "Successful"
+    if other_mongo_db.emails.insert_one({"email": email})
+       return "Successful"
 
 
 
