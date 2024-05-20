@@ -27,7 +27,7 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 secret_name = "sendgrid-api-key"
 api_key_encoded = os.environ.get("SENDGRID_API_KEY")
 
-api_key = base64.b64decode(api_key_encoded).decode("utf-8")
+#api_key = base64.b64decode(api_key_encoded).decode("utf-8")
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other-mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
@@ -59,13 +59,14 @@ def send_email(recipient, subject_s, body):
         subject='Subject',
         html_content='<strong>and easy to do anywhere, even with Python</strong>')
     try:
-        sg = SendGridAPIClient(api_key)
+        sg = SendGridAPIClient(api_key_encoded)
         response = sg.send(message)
     #print(response.status_code)
     #print(response.body)
     #print(response.headers)
     except Exception as e:
         print(e)
+        print(api_key_encoded)
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
