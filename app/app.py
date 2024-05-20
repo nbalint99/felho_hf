@@ -1,6 +1,8 @@
 from flask import Flask, request, redirect, url_for, render_template, jsonify, send_file, flash
 from flask_pymongo import PyMongo, ObjectId
 from flask_mail import Mail, Message
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 from werkzeug.utils import secure_filename
 from gridfs import GridFS
 from bson import ObjectId
@@ -44,24 +46,29 @@ def index():
 def health():
     return jsonify(status="ok")
 
-def send_email(recipient, subject, body):
+def send_email(recipient, subject_s, body):
+    message = Mail(
+        from_email='nbhofficial.drive@gmail.com',
+        to_emails='novak.balint.huba@gmail.com',
+        subject = subject_s,
+        html_content = body
     try:
-        msg = Message(subject, sender=app.config['MAIL_USERNAME'], recipients="nbhofficial.drive@gmail.com")
-        msg.body = body
-        mail.send(msg)
-        return True
+        sg = SendGridAPIClient(os.environ.get('SG.no-Tab3hSBKRqP24cL7gzA._En-paN_Y7$
+        response = sg.send(message)
+    #print(response.status_code)
+    #print(response.body)
+    #print(response.headers)
     except Exception as e:
-       print("Failed {e}")
-       return False
+        print(e.message)
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
     #for email_doc in emails_collection:
         #recipient_email = email_doc["email"]
     recipient_email = "nbhofficial.drive@gmail.com"
-    subject = "New image - auto detection"
+    subject_s = "New image - auto detection"
     body = "A new image has been uploaded, you can check it here: {file_url}"
-    if send_email(recipient_email, subject, body):
+    if send_email(recipient_email, subject_s, body):
        flash("Email siker", "success")
     else:
        flash("Hiba", "error")
