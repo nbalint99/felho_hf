@@ -61,7 +61,6 @@ def send_emails(file_url, printout):
     previous = fs.find()
     previous_push = [
         {
-             'filename': file.filename,
              'url': url_for('uploads', filename=file.filename, _external=True)
         }
         for file in previous
