@@ -14,6 +14,7 @@ RUN pip install --upgrade pip setuptools wheel
 RUN pip install opencv-python-headless
 RUN pip install darknet
 RUN pip install Flask-Mail
+RUN pip install sendgrid
 RUN mkdir -p /app/other_config
 RUN mkdir -p /app/uploads && chmod 777 /app/uploads
 RUN wget -O /app/other_config/yolov3.weights "https://pjreddie.com/media/files/yolov3.weights"
