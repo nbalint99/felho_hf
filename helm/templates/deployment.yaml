@@ -23,7 +23,7 @@ spec:
             value: "mongodb://mongo:27017/carspics"
           env:
           - name: OTHER_MONGO_URI
-            value: "mongodb://mongo:27017/email"
+            value: "mongodb://other_mongo:27017/email"
           readinessProbe:
             httpGet:
                 path: /health
