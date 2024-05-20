@@ -12,10 +12,11 @@ app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
 #app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.secret_key = "xoirns-nsdnrR-4zslzt"
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_SERVER"] = "smtp.mail.yahoo.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USERNAME"] = "nbhofficial.drive@gmail.com"
+app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_USERNAME"] = "balint.novak@yahoo.com"
 app.config["MAIL_PASSWORD"] = "xajge6-naSbib-taffuj"
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
