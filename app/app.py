@@ -7,14 +7,21 @@ from bson import ObjectId
 import os
 import cv2
 import numpy as np
+import logging
 
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
 #app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.config["SECRET_KEY"] = "xoirns-nsdnrR-4zslzt"
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = "nbhofficial.drive@gmail.com"
+app.config["MAIL_PASSWORD"] = "xajge6-naSbib-taffuj"
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
+logging.basicConfig(level=logging.INFO)
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other-mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
@@ -42,23 +49,12 @@ def health():
 def send_email(recipient, subject, body):
     msg = Message(subject, recipients=[recipient])
     msg.body = body
-    #mail.send(msg)
-
-
-    #msg = MIMEMultipart()
-    #msg["From"] = "nbhofficial.drive@gmail.com"
-    #msg["To"] = recipient
-    #msg["Subject"] = subject
-    #msg.attach(MIMEText(body, "plain"))
 
     try:
-       server = smtplib.SMTP("smtp.gmail.com", 587)
-       server.starttls()
-       server.login("nbhofficial.drive@gmail.com", "xajge6-naSbib-taffuj")
-       text = msg.as_string()
-       server.sendmail("nbhofficial.drive@gmail.com", recipient, text)
-       server.quit()
+       mail.send(msg)
+       logging.info("Sikeres kuldes {recipient}")
     except Exception as e:
+       logging.info("Failed {e}")
        print("Failed {e}")
 
 def send_emails(file_url):
