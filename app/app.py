@@ -16,7 +16,7 @@ app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 
-other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email"))
+other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other-mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
 
 mongo = PyMongo(app)
