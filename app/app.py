@@ -148,7 +148,7 @@ def subscribe():
     email = request.form["email"]
 
     if email:
-       result = other_mongo.db.emails.insert_one({"email": email})
+       result = other_mongo_db.emails.insert_one({"email": email})
        if result.acknowledged:
            flash("Subscribe is successful!", "success")
        else:
