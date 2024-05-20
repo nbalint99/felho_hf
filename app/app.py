@@ -71,8 +71,10 @@ def send_emails(file_url, printout):
         subject_s = "New image - auto detection"
         body = "A new image has been uploaded with {} cars, you can check it here: {}.\n\n".format(printout, file_url)
 
-        for prev in previous_push:
-            body += "{}\n".format(prev["url"])
+        if previous_push != "":
+            body += "Previous images:\n\n"
+            for prev in previous_push:
+                body += "{}\n\n".format(prev["url"])
 
         if send_email(recipient_email, subject_s, body):
             flash("Email siker", "success")
