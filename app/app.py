@@ -153,12 +153,10 @@ def subscribe():
            flash("Subscribe is successful!", "success")
        else:
            flash("Failed!", "error")
-
     else:
        flash("Email is required", "error")
-    return redirect(url_for("admin")
 
-
+    return redirect(url_for("admin"))
 
 if __name__ == "__main__":
    app.run(host="0.0.0.0", debug=True)
