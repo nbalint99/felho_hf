@@ -67,7 +67,7 @@ def send_emails(file_url):
         recipient_email = email_doc["email"]
         subject = "New image - auto detection"
         body = "A new image has been uploaded, you can check it here: {file_url}"
-        send_email(recipent_email, subject, body)
+        send_email(recipient_email, subject, body)
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
