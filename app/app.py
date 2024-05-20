@@ -119,7 +119,7 @@ def upload_file():
         file_url = url_for("uploads", filename="detected_" + filename, _external=True)
         send_emails(file_url)
 
-        return redirect(url_for('uploads', file_id="detected_" + filename))
+        return redirect(url_for('uploads', filename="detected_" + filename))
 
 @app.route("/file/<filename>")
 def file(filename):
