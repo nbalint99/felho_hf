@@ -64,6 +64,7 @@ def send_emails(file_url, printout):
              'filename': file.filename,
              'url': url_for('uploads', filename=file.filename, _external=True)
         }
+        for file in previous
     ]
 
     for email_doc in emails_collection:
