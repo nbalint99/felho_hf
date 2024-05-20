@@ -134,7 +134,7 @@ def uploads(filename):
     try:
         file = fs.find_one({"filename": filename})
         description = file.description
-        return render_template("upload.html", filename=file.filename, description=description, file_id=file_id)
+        return render_template("upload.html", filename=file.filename, description=description, file_id=filename)
     except Exception as exc:
         return str(exc)
 
