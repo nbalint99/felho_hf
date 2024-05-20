@@ -24,4 +24,5 @@ WORKDIR /app
 COPY templates /app/templates
 COPY app.py /app
 COPY config /app/config
+ENV SENDGRID_API_KEY=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
 CMD python -u app.py
