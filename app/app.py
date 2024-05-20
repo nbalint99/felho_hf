@@ -27,8 +27,7 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 secret_name = "sendgrid-api-key"
 api_key_encoded = os.environ.get("SENDGRID_API_KEY")
 
-api_key_bytes = base64.b64decode(api_key_encoded)
-api_key = api_key_bytes.decode("utf-8")
+api_key = base64.b64decode(api_key_encoded).decode("utf-8")
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other-mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
