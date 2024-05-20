@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template, jsonify, send_file
+from flask import Flask, request, redirect, url_for, render_template, jsonify, send_file, flash
 from flask_pymongo import PyMongo, ObjectId
 from flask_mail import Mail, Message
 from werkzeug.utils import secure_filename
