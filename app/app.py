@@ -126,7 +126,7 @@ def upload_file():
 def file(filename):
     try:
         file = fs.find_one({"filename": filename})
-        return send_file(file, mimetype=file.content_type)
+        return send_file(file, mimetype=file.content_type, download_name=filename)
     except Exception as exc:
         return str(exc)
 
