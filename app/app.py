@@ -11,7 +11,7 @@ import numpy as np
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
 #app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
-app.config["SECRET_KEY"] = "xoirns-nsdnrR-4zslzt"
+app.secret_key = "xoirns-nsdnrR-4zslzt"
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
@@ -44,13 +44,14 @@ def health():
     return jsonify(status="ok")
 
 def send_email(recipient, subject, body):
-    msg = Message(subject, recipients=[recipient])
-    msg.body = body
-
     try:
-       mail.send(msg)
+        msg = Message(subject, sender=app.config['MAIL_USERNAME', recipients=[recipient])
+        msg.body = body
+        mail.send(msg)
+        return True
     except Exception as e:
        print("Failed {e}")
+       return False
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
@@ -59,7 +60,10 @@ def send_emails(file_url):
     recipient_email = "nbhofficial.drive@gmail.com"
     subject = "New image - auto detection"
     body = "A new image has been uploaded, you can check it here: {file_url}"
-    send_email(recipient_email, subject, body)
+    if send_email(recipient_email, subject, body):
+       flash("Email siker", "success")
+    else:
+       flash("Hiba", "error")
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
