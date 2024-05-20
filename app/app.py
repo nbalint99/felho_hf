@@ -51,7 +51,7 @@ def send_email(recipient, subject_s, body):
         from_email='nbhofficial.drive@gmail.com',
         to_emails='novak.balint.huba@gmail.com',
         subject = subject_s,
-        html_content = body
+        html_content = body)
     try:
         sg = SendGridAPIClient(os.environ.get('SG.no-Tab3hSBKRqP24cL7gzA._En-paN_Y7$
         response = sg.send(message)
