@@ -19,7 +19,7 @@ spec:
         - containerPort: 27017
         volumeMounts:
         - name: other-mongo-storage
-          mountPath: /data/other-db
+          mountPath: /data/other-mongo
       volumes:
       - name: other-mongo-storage
         persistentVolumeClaim:
