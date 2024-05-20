@@ -116,23 +116,23 @@ def upload_file():
         with open(detect_file_path, "rb") as f:
             fs.put(f, filename="detected_" + filename, description=description)
 
-        file_url = url_for("uploads", file_id="detected_" + filename, _external=True)
+        file_url = url_for("uploads", filename="detected_" + filename, _external=True)
         send_emails(file_url)
 
         return redirect(url_for('uploads', file_id="detected_" + filename))
 
-@app.route("/file/<file_id>")
-def file(file_id):
+@app.route("/file/<filename>")
+def file(filename):
     try:
-        file = fs.get(ObjectId(file_id))
+        file = fs.find_one({"filename": filename})
         return send_file(file, mimetype=file.content_type)
     except Exception as exc:
         return str(exc)
 
-@app.route("/uploads/<file_id>")
-def uploads(file_id):
+@app.route("/uploads/<filename>")
+def uploads(filename):
     try:
-        file = fs.get(ObjectId(file_id))
+        file = fs.find_one({"filename": filename})
         description = file.description
         return render_template("upload.html", filename=file.filename, description=description, file_id=file_id)
     except Exception as exc:
