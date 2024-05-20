@@ -13,7 +13,6 @@ import base64
 
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
-#app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.secret_key = "xoirns-nsdnrR-4zslzt"
 app.config["MAIL_USERNAME"] = "nbhofficial.drive@gmail.com"
 app.config["UPLOAD_FOLDER"] = "uploads"
@@ -21,8 +20,6 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 secret_name = "sendgrid-api-key"
 api_key_encoded = os.environ.get("SENDGRID_API_KEY")
-
-#api_key = base64.b64decode(api_key_encoded).decode("utf-8")
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other-mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
@@ -56,19 +53,27 @@ def send_email(recipient, subject_s, body):
     try:
         sg = SendGridAPIClient(api_key_encoded)
         response = sg.send(message)
-    #print(response.status_code)
-    #print(response.body)
-    #print(response.headers)
     except Exception as e:
         print(e)
-        print(api_key_encoded)
 
-def send_emails(file_url):
+def send_emails(file_url, printout):
     emails_collection = other_mongo_db.emails.find({})
+    previous = fs.find()
+    previous_push = [
+        {
+             'filename': file.filename,
+             'url': url_for('uploads', filename=file.filename, _external=True)
+        }
+    ]
+
     for email_doc in emails_collection:
         recipient_email = email_doc["email"]
         subject_s = "New image - auto detection"
-        body = "A new image has been uploaded, you can check it here: {file_url}"
+        body = "A new image has been uploaded with {} cars, you can check it here: {}.\n\n".format(printout, file_url)
+
+        for prev in previous_push:
+            body += "{}\n".format(prev["url"])
+
         if send_email(recipient_email, subject_s, body):
             flash("Email siker", "success")
         else:
@@ -117,8 +122,10 @@ def upload_file():
 
         nms = cv2.dnn.NMSBoxes(objects, confidences, score_threshold=0.5, nms_threshold=0.4)
 
+        printout = 0
         for i in nms:
             x, y, w, h = objects[i]
+            printout += 1
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         detect_file_path = os.path.join(app.config["UPLOAD_FOLDER"], 'detected_' + filename)
@@ -128,7 +135,7 @@ def upload_file():
             fs.put(f, filename="detected_" + filename, description=description)
 
         file_url = url_for("uploads", filename="detected_" + filename, _external=True)
-        send_emails(file_url)
+        send_emails(file_url, printout)
 
         return redirect(url_for('uploads', filename="detected_" + filename))
 
