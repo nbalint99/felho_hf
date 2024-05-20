@@ -13,6 +13,7 @@ app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/car
 #app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+os.chmod(app.config["UPLOAD_FOLDER"], Oo777)
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
@@ -66,10 +67,10 @@ def send_emails(file_url):
 @app.route("/upload", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
-        return "No file in"
+        return "No file in requested"
     file = request.files["file"]
     if file.filename == "":
-        return "No file selected"
+        return "No file selected, but it was required"
     if file:
         description = request.form["description"]
 
