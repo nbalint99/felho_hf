@@ -21,7 +21,6 @@ other_mongo_db = other_mongo_client.db
 
 mongo = PyMongo(app)
 mail = Mail(app)
-#other_mongo = PyMongo(app, config_prefix='OTHER')
 fs = GridFS(mongo.db)
 
 config_file = "config/yolov3.cfg"
