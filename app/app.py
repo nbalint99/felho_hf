@@ -56,6 +56,7 @@ def send_email(recipient, subject, body):
     except Exception as e:
        logging.info("Failed {e}")
        print("Failed {e}")
+       return render_template("admin.html")
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
