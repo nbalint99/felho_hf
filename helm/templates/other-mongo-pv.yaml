@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /data/db
+    path: "/data/other-mongo"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

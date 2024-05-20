@@ -18,12 +18,12 @@ spec:
         ports:
         - containerPort: 27017
         volumeMounts:
-        - name: mongo-storage
-          mountPath: /data/db
+        - name: other-mongo-storage
+          mountPath: /data/other-db
       volumes:
-      - name: mongo-storage
+      - name: other-mongo-storage
         persistentVolumeClaim:
-          claimName: mongo-pvc
+          claimName: other-mongo-pvc
 ---
 apiVersion: v1
 kind: Service
