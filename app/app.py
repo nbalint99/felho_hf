@@ -13,7 +13,7 @@ app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/car
 #app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
-os.chmod(app.config["UPLOAD_FOLDER"], 0o777)
+
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
