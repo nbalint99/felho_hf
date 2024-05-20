@@ -49,9 +49,9 @@ def health():
 def send_email(recipient, subject_s, body):
     message = Mail(
         from_email='nbhofficial.drive@gmail.com',
-        to_emails='xxx@xxx.com',
-        subject = subject_s,
-        html_content = body)
+        to_emails='novak.balint.huba@gmail.com',
+        subject='Subject',
+        html_content='<strong>and easy to do anywhere, even with Python</strong>')
     try:
         sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
         response = sg.send(message)
