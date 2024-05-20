@@ -11,6 +11,7 @@ import numpy as np
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
 #app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
+app.config["SECRET_KEY"] = "xoirns-nsdnrR-4zslzt"
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
