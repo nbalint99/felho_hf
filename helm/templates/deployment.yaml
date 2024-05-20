@@ -27,7 +27,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: sendgrid-api-key
-                key: Z1F3VHo2NnJJOXdr
+                key: api-key
           readinessProbe:
             httpGet:
                 path: /health
