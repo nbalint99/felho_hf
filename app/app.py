@@ -9,6 +9,7 @@ from bson import ObjectId
 import os
 import cv2
 import numpy as np
+import base64
 
 app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
@@ -22,6 +23,12 @@ app.config["MAIL_USERNAME"] = "api"
 app.config["MAIL_PASSWORD"] = "5c8ec13a05410e18b2bca63dd9c9f8ef"
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+secret_name = "sendgrid-api-key"
+api_key_encoded = os.environ.get("SENDGRID_API_KEY")
+
+api_key_bytes = base64.b64decode(api_key_encoded)
+api_key = api_key_bytes.decode("utf-8")
 
 other_mongo_client = PyMongo(app, uri=os.environ.get("OTHER_MONGO_URI", "mongodb://other-mongo:27017/email"))
 other_mongo_db = other_mongo_client.db
@@ -53,7 +60,7 @@ def send_email(recipient, subject_s, body):
         subject='Subject',
         html_content='<strong>and easy to do anywhere, even with Python</strong>')
     try:
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        sg = SendGridAPIClient(api_key)
         response = sg.send(message)
     #print(response.status_code)
     #print(response.body)

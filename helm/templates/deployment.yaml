@@ -23,6 +23,11 @@ spec:
             value: "mongodb://mongo:27017/carspics"
           - name: OTHER_MONGO_URI
             value: "mongodb://other-mongo:27017/email"
+          - name: SENDGRID_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: sendgrid-api-key
+                key: Z1F3VHo2NnJJOXdr
           readinessProbe:
             httpGet:
                 path: /health
