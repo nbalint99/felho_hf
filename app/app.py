@@ -15,12 +15,7 @@ app = Flask(__name__, template_folder='templates')
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI", "mongodb://mongo:27017/carspics")
 #app.config["OTHER_MONGO_URI"] = os.environ.get("OTHER_MONGO_URI", "mongodb://other_mongo:27017/email")
 app.secret_key = "xoirns-nsdnrR-4zslzt"
-app.config["MAIL_SERVER"] = "bulk.smtp.mailtrap.io"
-app.config["MAIL_PORT"] = 587
-app.config["MAIL_USE_TLS"] = True
-app.config["MAIL_USE_SSL"] = False
-app.config["MAIL_USERNAME"] = "api"
-app.config["MAIL_PASSWORD"] = "5c8ec13a05410e18b2bca63dd9c9f8ef"
+app.config["MAIL_USERNAME"] = "nbhofficial.drive@gmail.com"
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
@@ -54,10 +49,10 @@ def health():
 
 def send_email(recipient, subject_s, body):
     message = Mail(
-        from_email='nbhofficial.drive@gmail.com',
-        to_emails='novak.balint.huba@gmail.com',
-        subject='Subject',
-        html_content='<strong>and easy to do anywhere, even with Python</strong>')
+        from_email=app.config["MAIL_USERNAME"],
+        to_emails=recipient,
+        subject=subject_s,
+        html_content=body)
     try:
         sg = SendGridAPIClient(api_key_encoded)
         response = sg.send(message)
@@ -70,15 +65,14 @@ def send_email(recipient, subject_s, body):
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
-    #for email_doc in emails_collection:
-        #recipient_email = email_doc["email"]
-    recipient_email = "nbhofficial.drive@gmail.com"
-    subject_s = "New image - auto detection"
-    body = "A new image has been uploaded, you can check it here: {file_url}"
-    if send_email(recipient_email, subject_s, body):
-       flash("Email siker", "success")
-    else:
-       flash("Hiba", "error")
+    for email_doc in emails_collection:
+        recipient_email = email_doc["email"]
+        subject_s = "New image - auto detection"
+        body = "A new image has been uploaded, you can check it here: {file_url}"
+        if send_email(recipient_email, subject_s, body):
+            flash("Email siker", "success")
+        else:
+            flash("Hiba", "error")
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
