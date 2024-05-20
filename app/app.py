@@ -41,11 +41,16 @@ def health():
     return jsonify(status="ok")
 
 def send_email(recipient, subject, body):
-    msg = MIMEMultipart()
-    msg["From"] = "nbhofficial.drive@gmail.com"
-    msg["To"] = recipient
-    msg["Subject"] = subject
-    msg.attach(MIMEText(body, "plain"))
+    msg = Message(subject, recipients=[recipient])
+    msg.body = body
+    #mail.send(msg)
+
+
+    #msg = MIMEMultipart()
+    #msg["From"] = "nbhofficial.drive@gmail.com"
+    #msg["To"] = recipient
+    #msg["Subject"] = subject
+    #msg.attach(MIMEText(body, "plain"))
 
     try:
        server = smtplib.SMTP("smtp.gmail.com", 587)
