@@ -45,7 +45,7 @@ def health():
 
 def send_email(recipient, subject, body):
     try:
-        msg = Message(subject, sender=app.config['MAIL_USERNAME'], recipients=[recipient])
+        msg = Message(subject, sender=app.config['MAIL_USERNAME'], recipients="nbhofficial.drive@gmail.com")
         msg.body = body
         mail.send(msg)
         return True
