@@ -49,18 +49,17 @@ def send_email(recipient, subject, body):
 
     try:
        mail.send(msg)
-       return render_template("index.html")
     except Exception as e:
        print("Failed {e}")
-       return render_template("admin.html")
 
 def send_emails(file_url):
     emails_collection = other_mongo_db.emails.find({})
-    for email_doc in emails_collection:
-        recipient_email = email_doc["email"]
-        subject = "New image - auto detection"
-        body = "A new image has been uploaded, you can check it here: {file_url}"
-        send_email(recipient_email, subject, body)
+    #for email_doc in emails_collection:
+        #recipient_email = email_doc["email"]
+    recipient_email = "nbhofficial.drive@gmail.com"
+    subject = "New image - auto detection"
+    body = "A new image has been uploaded, you can check it here: {file_url}"
+    send_email(recipient_email, subject, body)
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
@@ -118,7 +117,7 @@ def upload_file():
         file_url = url_for("uploads", filename="detected_" + filename, _external=True)
         send_emails(file_url)
 
-        #return redirect(url_for('uploads', filename="detected_" + filename))
+        return redirect(url_for('uploads', filename="detected_" + filename))
 
 @app.route("/file/<filename>")
 def file(filename):
